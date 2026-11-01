@@ -1,0 +1,353 @@
+{
+  "event": {
+    "name": "Tech Tank Hackathon",
+    "theme": "Build for the Unexpected",
+    "campaign": "BUILD. BREAK. ADAPT.",
+    "tagline": "Your first solution is only the beginning.",
+    "about": "Tech Tank is a hackathon built around one idea: real systems break. Pick a track, build something that matters, and then survive the moment reality changes the rules. The best projects are not the ones that never fail. They are the ones that adapt.",
+    "startsAt": "2026-11-20T09:00:00+05:30",
+    "endsAt": "2026-11-20T16:30:00+05:30",
+    "datesTentative": true,
+    "venue": "Venue to be announced",
+    "phase": "upcoming",
+    "registerUrl": "",
+    "contactEmail": "",
+    "instagram": "",
+    "stats": [
+      {
+        "value": "4",
+        "label": "Hours of building"
+      },
+      {
+        "value": "5",
+        "label": "Open tracks"
+      },
+      {
+        "value": "2–4",
+        "label": "Members per team"
+      },
+      {
+        "value": "1",
+        "label": "Twist nobody sees coming"
+      }
+    ],
+    "registrationDeadline": "2026-11-10T23:59:00+05:30",
+    "registrationOpen": true
+  },
+  "alert": {
+    "active": false,
+    "id": "aliw4t5q",
+    "level": "RED",
+    "title": "Reality check",
+    "message": "The twist is live. Check your table for your scenario. The adaptation window starts now."
+  },
+  "announcements": [
+    {
+      "id": "a1",
+      "time": "",
+      "text": "Registrations open soon. Follow us for the theme reveal."
+    },
+    {
+      "id": "a2",
+      "time": "",
+      "text": "Can your project survive the unexpected?"
+    }
+  ],
+  "question": {
+    "sealed": true,
+    "revealAt": "2026-11-20T10:00:00+05:30",
+    "sample": true
+  },
+  "tracks": [
+    {
+      "id": "ai",
+      "name": "AI & Agentic Systems",
+      "icon": "brain",
+      "color": "#7c5cff",
+      "description": "Software that does more than answer. It plans, decides and takes action.",
+      "areas": [
+        "AI agents and autonomous workflows",
+        "Intelligent automation",
+        "Decision-support systems",
+        "Generative AI applications"
+      ],
+      "about": "Build an AI system that completes a real task on its own, or helps a person make a better decision. Think of an assistant that books, files, checks or reminds, not a chatbot that only talks. It has to work when the input is messy, a tool fails, or the model is unsure.",
+      "examples": [
+        "An agent that reads a college circular and adds every deadline to students' calendars",
+        "A study assistant that builds a revision plan from a syllabus and adjusts it after each mock test",
+        "A support bot that solves common hostel or IT complaints and hands the rest to a human"
+      ],
+      "lookFor": "Does the agent finish the job reliably, and does it fail safely when something goes wrong?"
+    },
+    {
+      "id": "cyber",
+      "name": "Cybersecurity & Digital Trust",
+      "icon": "shield",
+      "color": "#ff3b5c",
+      "description": "Protect people and systems from scams, attacks and misuse.",
+      "areas": [
+        "Scam/phishing detection",
+        "Cyber-threat detection",
+        "Identity and access management",
+        "Security for AI systems"
+      ],
+      "about": "Build something that keeps people, data or systems safe. It could catch a threat before it lands, make it harder to fake an identity, or help ordinary users spot a scam. Security for AI systems, such as stopping prompt injection or data leaks, counts too.",
+      "examples": [
+        "A browser extension or SMS checker that flags phishing links and fake payment requests",
+        "A login system for a campus app with simple, strong two-factor sign-in",
+        "A tool that scans a small web app and explains its security holes in plain language"
+      ],
+      "lookFor": "Does it stop a real attack, and can a non-expert actually use it?"
+    },
+    {
+      "id": "climate",
+      "name": "Climate, Sustainability & Smart Cities",
+      "icon": "leaf",
+      "color": "#18e0a0",
+      "description": "Use technology to make cities cleaner, greener and ready for disasters.",
+      "areas": [
+        "Waste management",
+        "Traffic and mobility",
+        "Energy optimisation",
+        "Water management",
+        "Disaster preparedness"
+      ],
+      "about": "Pick a problem in how a city or campus uses energy, water, transport or waste, and make it measurably better. Or help people prepare for and respond to floods, heatwaves and outages. Real or realistic data counts for a lot here.",
+      "examples": [
+        "A dashboard that spots energy waste in campus buildings and suggests fixes",
+        "A route planner that cuts traffic and fuel use for buses or deliveries",
+        "A flood alert app that works offline and guides people to safe spots"
+      ],
+      "lookFor": "Is the impact measurable, and would it still work when the network or power is down?"
+    },
+    {
+      "id": "campus",
+      "name": "Human & Campus Life",
+      "icon": "people",
+      "color": "#ffb020",
+      "description": "Make student life safer, fairer and easier.",
+      "areas": [
+        "Education",
+        "Accessibility",
+        "Student productivity",
+        "Campus safety",
+        "Well-being and support systems"
+      ],
+      "about": "Solve a problem you see every day at college: learning, accessibility, safety, mental health, or simply getting things done. The best ideas come from talking to the students and staff who would use them.",
+      "examples": [
+        "An accessible campus map with step-free routes and live lift status",
+        "An anonymous, safe way to report harassment or ask for help",
+        "A shared notes and doubt-solving space that rewards students who help others"
+      ],
+      "lookFor": "Would real students use it tomorrow, and does it include people who usually get left out?"
+    },
+    {
+      "id": "open",
+      "name": "Open Innovation",
+      "icon": "spark",
+      "color": "#2ec5ff",
+      "description": "Bring your own problem, as long as the need is real.",
+      "areas": [
+        "Propose your own problem and solution",
+        "Must demonstrate a genuine real-world need"
+      ],
+      "about": "Have an idea that doesn't fit the other tracks? Build it here. You have to show that the problem is real (who has it, how often, and what it costs them) and that your solution actually helps.",
+      "examples": [
+        "A tool for local shop owners to manage stock and orders over WhatsApp",
+        "An app that helps farmers check crop prices and weather before they sell",
+        "Anything else, as long as you can show who needs it and why"
+      ],
+      "lookFor": "How clear and real is the problem, and how directly does the build solve it?"
+    }
+  ],
+  "aiNote": "AI is encouraged but not mandatory. Judges score how effectively technology solves the problem, not whether AI was used.",
+  "crisis": {
+    "title": "The twist",
+    "intro": "",
+    "tests": [],
+    "revealAt": "",
+    "sealed": true
+  },
+  "rules": [
+    "Teams of 2 to 4 members. Every member must be a registered student.",
+    "All code, design and content must be created during the hackathon. Open-source libraries, public APIs and AI tools are allowed and must be credited.",
+    "Each team picks one track at registration. Open Innovation teams must show a genuine real-world need.",
+    "Every team faces the twist mid-event and must adapt within the stated time. Ignoring it scores zero for adaptability.",
+    "Projects must be demoed live. A recording is only allowed if the twist itself took your system down, and you must explain why.",
+    "Be respectful. Harassment, plagiarism or tampering with another team's work means disqualification.",
+    "The judges' decision is final."
+  ],
+  "judging": [
+    {
+      "name": "Innovation",
+      "weight": 20,
+      "desc": "How original is the idea and the approach?"
+    },
+    {
+      "name": "Technical Execution",
+      "weight": 20,
+      "desc": "Does it actually work, and is it well built?"
+    },
+    {
+      "name": "Real-World Impact",
+      "weight": 20,
+      "desc": "How effectively does the technology solve a genuine problem?"
+    },
+    {
+      "name": "Demo & Presentation",
+      "weight": 20,
+      "desc": "How clearly is the problem, solution and journey communicated?"
+    },
+    {
+      "name": "Crisis Adaptability",
+      "weight": 20,
+      "desc": "Resilience, fallbacks and decision-making under pressure."
+    }
+  ],
+  "schedule": [
+    {
+      "day": "Day 1",
+      "time": "09:00",
+      "title": "Check-in",
+      "desc": "Collect your badges and find your team table.",
+      "type": ""
+    },
+    {
+      "day": "Day 1",
+      "time": "09:30",
+      "title": "Opening & briefing",
+      "desc": "Tracks, rules and event instructions.",
+      "type": "key"
+    },
+    {
+      "day": "Day 1",
+      "time": "10:00",
+      "title": "Hacking begins",
+      "desc": "Four hours to build, adapt and submit your solution.",
+      "type": "key"
+    },
+    {
+      "day": "Day 1",
+      "time": "12:30",
+      "title": "The twist hits",
+      "desc": "The twist is revealed. Adapt your build before the 2 PM deadline.",
+      "type": "crisis"
+    },
+    {
+      "day": "Day 1",
+      "time": "14:00",
+      "title": "Code freeze & lunch",
+      "desc": "Four-hour work session ends. Submit your repository and README, then break for lunch.",
+      "type": "key"
+    },
+    {
+      "day": "Day 1",
+      "time": "14:30",
+      "title": "Demos & judging",
+      "desc": "3-minute live demo and 2 minutes of Q&A per team.",
+      "type": "key"
+    },
+    {
+      "day": "Day 1",
+      "time": "16:00",
+      "title": "Judging wrap-up",
+      "desc": "Final deliberations and scores.",
+      "type": ""
+    },
+    {
+      "day": "Day 1",
+      "time": "16:30",
+      "title": "Results & closing",
+      "desc": "Winners announced. Expected finish around 4–5 PM.",
+      "type": "key"
+    }
+  ],
+  "teams": [
+    {
+      "id": "t1",
+      "name": "Null Pointers",
+      "track": "ai"
+    },
+    {
+      "id": "t2",
+      "name": "Firewall Five",
+      "track": "cyber"
+    },
+    {
+      "id": "t3",
+      "name": "Green Byte",
+      "track": "climate"
+    },
+    {
+      "id": "t4",
+      "name": "Campus Pulse",
+      "track": "campus"
+    },
+    {
+      "id": "t5",
+      "name": "Edge Case",
+      "track": "open"
+    },
+    {
+      "id": "t6",
+      "name": "Kernel Panic",
+      "track": "ai"
+    }
+  ],
+  "results": {
+    "published": false
+  },
+  "media": [],
+  "committee": [
+    "Rithul",
+    "Aadarsh",
+    "Sinchana",
+    "Khushi",
+    "Shreyas",
+    "Dharunish",
+    "Divyash",
+    "Rishi",
+    "Sridhar",
+    "Mansimar",
+    "Dharshini",
+    "Alton"
+  ],
+  "faq": [
+    {
+      "q": "Who can register?",
+      "a": "Any student. Form a team of 2 to 4 and register before the deadline."
+    },
+    {
+      "q": "When is the question revealed?",
+      "a": "The Question Card unseals on this site at the set time. Until then it stays locked for everyone, organisers included on the public site."
+    },
+    {
+      "q": "Do we have to use AI?",
+      "a": "No. AI is encouraged but not mandatory. Judges look at how well your technology solves the problem."
+    },
+    {
+      "q": "How are teams selected?",
+      "a": "Registered teams go through a qualifier. The qualified list will be published here."
+    },
+    {
+      "q": "What is the twist?",
+      "a": "Partway through, every team faces a reality check that breaks one assumption in their project. Adapting well is 20% of your score."
+    }
+  ],
+  "portal": {
+    "welcome": "Your question, updates and team progress. All in one place.",
+    "demoMinutes": 3,
+    "qaMinutes": 2,
+    "presentationIntro": "Show the problem, demo your working solution, and explain how you adapted to the twist.",
+    "presentationNotes": "Be ready with your working demo before your slot. Keep your repository and README accessible to the judges.",
+    "submissionUrl": "",
+    "parameters": [],
+    "resultNotice": "Scores and rank appear here when the organisers publish results."
+  },
+  "qualifiers": {
+    "published": false,
+    "note": "Teams selected for the main event. Check your email for next steps.",
+    "list": []
+  },
+  "updatedAt": "2026-10-22T07:31:30.703Z"
+}

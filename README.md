@@ -25,6 +25,8 @@ On Windows PowerShell: `$env:ADMIN_PASSCODE="your-secret"; node server.js`
 
 ## GitHub
 
+The public 3D event website is exported into `docs/` for GitHub Pages. Run `npm run build:pages` after public content or design changes, then commit and push the updated `docs/` files. Pages uses `main` and `/docs`. The export keeps sealed questions/twists and unpublished scores out of its JSON, and includes no private accounts or proofs. GitHub Pages displays event information and animation; account registration, payment uploads and admin tools require the Node server.
+
 The project can be kept in a GitHub repository. The included GitHub Actions workflow runs the tests on pushes and pull requests. There is no dependency installation or build step. `.env.example` documents server settings; real credentials, participant accounts, payment proofs, logs and backup data are excluded by `.gitignore`.
 
 Create an empty repository on GitHub, then run these commands from this folder, replacing the example URL with your repository URL:

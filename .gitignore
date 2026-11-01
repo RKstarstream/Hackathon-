@@ -1,0 +1,29 @@
+data/participants.private.json
+data/participants.private.json.tmp
+data/content.backup.json
+node_modules/
+data/payment-proofs/
+*.log
+preview.png
+mobile-preview.png
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+.clasp.json
+.clasprc.json
+*.pem
+*.key
+
+# Local editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary runtime files and deployment seed copies
+data/*.tmp
+data.seed/
+public/uploads.seed/
+coverage/

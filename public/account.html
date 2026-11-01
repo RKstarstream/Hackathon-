@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080e17"><title>Participant access · Tech Tank</title>
+  <link rel="stylesheet" href="/portal.css">
+</head>
+<body class="account-page">
+  <header class="portal-header"><a class="portal-wordmark" href="/login"><span class="status-dot"></span> PARTICIPANT SPACE</a><a class="tt-home" href="/" aria-label="Open main Tech Tank website"><span>Main website ↗</span><b>TT</b></a></header>
+  <main class="account-layout">
+    <section class="account-intro"><p class="eyebrow">TECH TANK / PARTICIPANT PORTAL</p><h1>Less searching.<br>More building<span>.</span></h1><p>Your question, your team’s progress, and everything you need for the event. All in one place.</p><div class="access-preview"><span>01 / THE CHALLENGE</span><strong>Ready when it’s time.</strong><p>The question unlocks here at the official reveal. Rules, presentation details and live updates stay close by.</p><div class="preview-tags"><span>Question</span><span>The twist</span><span>Your results</span></div></div><p class="account-foot">BUILD. BREAK. ADAPT.</p></section>
+    <section class="account-card" aria-labelledby="accountTitle">
+      <div class="account-tabs" aria-label="Account access"><a href="/register" id="registerTab">Create account</a><a href="/login" id="loginTab">Sign in</a></div>
+      <p class="eyebrow" id="accountEyebrow">WELCOME TO THE TANK</p><h2 id="accountTitle">Create your account</h2><p class="muted" id="accountHint">Register for the event and open your participant portal.</p>
+      <form id="accountForm">
+        <label id="nameField">Your full name<input name="name" autocomplete="name" maxlength="100" required></label>
+        <label id="teamField">Team name<input name="teamName" autocomplete="organization" maxlength="100" required><small>Use the same name as the rest of your team.</small></label>
+        <label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+        <label>Password<input name="password" type="password" autocomplete="new-password" minlength="10" maxlength="128" required><small id="passwordHint">At least 10 characters.</small></label>
+        <label id="confirmField">Confirm password<input name="confirmPassword" type="password" autocomplete="new-password" maxlength="128" required></label>
+        <fieldset class="payment-section" id="paymentField">
+          <legend>Registration payment · ₹150</legend>
+          <p>Scan the QR code below and pay ₹150. Enter your transaction ID and upload a screenshot showing the transaction ID and payment confirmation.</p>
+          <img class="payment-qr" src="/payment-qr.png" alt="Scan this QR code with your UPI app to pay the ₹150 registration fee" width="606" height="581">
+          <a class="text-link" href="/payment-qr.png" download="tech-tank-payment-qr.png">Download QR code ↗</a>
+          <label>Amount (INR)<input value="₹150" readonly aria-label="Registration payment amount: 150 rupees"></label>
+          <label>Transaction ID / UTR<input name="transactionId" maxlength="100" required autocomplete="off"><small>Copy the transaction reference from your payment app.</small></label>
+          <label>Transaction screenshot / payment proof<input name="paymentProof" type="file" accept="image/png,image/jpeg,image/webp" required aria-describedby="proofHint"><small id="proofHint">PNG, JPG or WebP, up to 5 MB. Include the amount, transaction ID and successful payment status.</small></label>
+          <p>Organisers will review your payment proof. Uploading a screenshot does not automatically confirm payment.</p>
+        </fieldset>
+        <p class="form-message" id="accountMessage" role="status" aria-live="polite"></p>
+        <button class="primary-button" id="accountSubmit" type="submit">Create account & enter portal <span aria-hidden="true">↗</span></button>
+      </form>
+      <p class="account-note" id="registrationNote">Each participant creates their own account. Organisers confirm eligibility and team assignments.</p>
+      <a class="text-link" href="/">← Explore the main website</a>
+    </section>
+  </main>
+  <script src="/account.js"></script>
+</body>
+</html>

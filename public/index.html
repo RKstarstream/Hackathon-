@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tech Tank Hackathon</title>
+<meta name="description" content="Tech Tank Hackathon. Build for the Unexpected. Register your team.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2304050a'/%3E%3Cpath d='M14 18h36v8H36v24h-8V26H14z' fill='%2340d6ff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="world.css">
+</head>
+<body>
+<!--TT:BODY-START-->
+<canvas id="world" aria-hidden="true"></canvas>
+<div id="vignette" aria-hidden="true"></div>
+
+<header class="hud-top">
+  <a href="#" class="brand" id="brand"><span class="brand-mark">TT</span><span class="brand-name">Tech Tank</span></a>
+  <span class="phase" id="phase"><i></i><span id="phaseText">Registrations open</span></span>
+  <a class="portal-link" id="navPortal" href="/login">Participant sign in</a>
+  <a class="btn-reg" id="navRegister" href="#">Register</a>
+</header>
+
+<nav class="stations" id="stations" aria-label="Sections"></nav>
+
+<div class="hint" id="hint"><span class="mouse"><i></i></span><span id="hintText">Scroll to power on</span></div>
+<div class="progress-rail" aria-hidden="true"><i id="progressBar"></i></div>
+
+<!-- Journey: the page height drives the camera. Panels are fixed overlays that fade in at their station. -->
+<div id="journey">
+  <section class="panel intro" data-station="power" id="p-power">
+    <p class="eyebrow">A hackathon for the unexpected</p>
+    <h1 class="display xl" id="introTitle">Tech Tank Hackathon</h1>
+    <p class="lead" id="introTag"></p>
+    <div class="intro-details" id="introDetails"></div>
+    <button class="explore-button" id="exploreButton" type="button">Enter the experience <span aria-hidden="true">↗</span></button>
+  </section>
+  <section class="panel right" data-station="about" id="p-about">
+    <h2 class="display" data-scramble id="aboutTitle"></h2>
+    <p class="lead" id="aboutText"></p>
+    <div class="stats" id="stats"></div>
+    <p class="meta" id="eventMeta"></p>
+  </section>
+
+  <section class="panel right" data-station="tracks" id="p-tracks">
+    <h2 class="display" data-scramble>Five ways in</h2>
+    <ul class="track-list" id="trackList"></ul>
+    <p class="note small dim-hint">Tap a track, or a floating card, for the full brief.</p>
+    <p class="note" id="aiNote"></p>
+  </section>
+
+  <section class="panel right" data-station="twist" id="p-twist" data-tone="red">
+    <h2 class="display" id="twistTitle" data-scramble>Build. Break. Adapt.</h2>
+    <p class="lead" id="twistText"></p>
+    <p class="note" id="twistRelease" hidden></p>
+    <ul class="tests" id="twistTests"></ul>
+  </section>
+
+  <section class="panel left wide" data-station="question" id="p-question" data-tone="amber">
+    <div id="questionBody"></div>
+  </section>
+
+  <section class="panel right" data-station="schedule" id="p-schedule">
+    <h2 class="display" data-scramble>How it unfolds</h2>
+    <div class="days" id="dayTabs"></div>
+    <ol class="timeline" id="timeline"></ol>
+    <p class="note small" id="scheduleNote"></p>
+  </section>
+
+  <section class="panel left" data-station="rules" id="p-rules">
+    <h2 class="display" data-scramble>Play fair. Ship real.</h2>
+    <ol class="rules" id="rulesList"></ol>
+    <div class="judging" id="judging"></div>
+  </section>
+
+  <section class="panel center" data-station="register" id="p-register">
+    <h2 class="display xl" id="regTitle">Register your team</h2>
+    <p class="lead" id="regText"></p>
+    <div class="countdown" id="regCountdown"></div>
+    <div class="cta-row">
+      <a class="btn-big" id="regButton" href="#">Register now</a>
+      <a class="btn-ghost" href="#control">Updates &amp; FAQ</a>
+    </div>
+  </section>
+</div>
+
+<!-- After the journey: normal scrolling for live, critical details -->
+<main id="control">
+  <div class="control-inner">
+    <section class="block event-updates" id="ticker" hidden aria-labelledby="updatesTitle">
+      <h2 class="display" id="updatesTitle">Event updates</h2>
+      <div id="tickerTrack" class="updates-list"></div>
+    </section>
+    <section class="block twist-summary" id="twistSummary" aria-labelledby="twistSummaryTitle">
+      <p class="eyebrow">BUILD. BREAK. ADAPT.</p>
+      <h2 class="display" id="twistSummaryTitle">The twist is sealed</h2>
+      <div id="twistSummaryContent"></div>
+    </section>
+    <section class="block" id="qualifiers" hidden>
+      <h2 class="display">Qualified teams</h2>
+      <p class="lead" id="qualNote"></p>
+      <div class="qual-tools"><input id="qualSearch" type="search" placeholder="Search your team"></div>
+      <ol class="qual-list" id="qualList"></ol>
+    </section>
+
+    <section class="block" id="results" hidden>
+      <h2 class="display">Results <span class="live"><i></i>LIVE</span></h2>
+      <p class="lead" id="resultsNote"></p>
+      <div class="winners" id="winners"></div>
+      <div class="board" id="board"></div>
+    </section>
+
+<section class="block" id="faq">
+      <h2 class="display">Questions</h2>
+      <div class="faq" id="faqList"></div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-tag" id="footerTag"></p>
+      <div class="footer-grid">
+        <div><h4>Organising team</h4><div class="committee" id="committee"></div></div>
+        <div><h4>Contact</h4><div id="contact"></div></div>
+      </div>
+      <p class="small dim" id="updated"></p>
+    </footer>
+  </div>
+</main>
+
+<div id="alertModal" class="alert-modal" hidden>
+  <div class="alert-box">
+    <div class="alert-level" id="alertLevel"></div>
+    <h2 id="alertTitle"></h2>
+    <p id="alertMsg"></p>
+    <button class="btn-big" id="alertClose">Got it</button>
+  </div>
+</div>
+<div id="alertBar" class="alert-bar" hidden><i></i><span id="alertBarText"></span></div>
+
+<div class="lightbox" id="lightbox" hidden>
+  <div class="card-widget-box" role="dialog" aria-modal="true" aria-labelledby="cardWidgetTitle">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Close"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <div class="lb-stage" id="lbStage"></div>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  <p class="lb-cap" id="lbCap"></p>
+  </div>
+</div>
+<div class="track-modal" id="trackModal" hidden>
+  <div class="tm-box" role="dialog" aria-modal="true" aria-labelledby="tmTitle">
+    <button class="lb-btn tm-close" id="tmClose" aria-label="Close"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div id="tmBody"></div>
+    <div class="tm-nav"><button class="btn-ghost" id="tmPrev"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</button><button class="btn-ghost" id="tmNext">Next track<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  </div>
+</div>
+<!--TT:BODY-END-->
+<script src="vendor/three.min.js"></script>
+<script src="vendor/three-post.js"></script>
+<script src="world.js"></script>
+</body>
+</html>

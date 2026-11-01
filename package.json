@@ -1,0 +1,8 @@
+{
+  "name": "tech-tank-hackathon",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tech Tank Hackathon website and live event control room",
+  "scripts": { "start": "node server.js", "test": "node --test" },
+  "engines": { "node": ">=18" }
+}

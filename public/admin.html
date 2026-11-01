@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tech Tank Control Room</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#06070c; --panel:#0d0f18; --panel2:#131624; --line:rgba(255,255,255,.09); --text:#eef1f8; --dim:#8a90a6;
+  --cyan:#2ec5ff; --violet:#7c5cff; --red:#ff3b5c; --amber:#ffb020; --green:#18e0a0;
+  --display:'Space Grotesk',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:var(--text); font:15px/1.5 var(--display); min-height:100vh; }
+[hidden] { display:none !important; }
+button, input, select, textarea { font:inherit; color:inherit; }
+.mono { font-family:var(--mono); }
+.dim { color:var(--dim); }
+
+/* login */
+.login { min-height:100vh; display:grid; place-items:center; padding:16px;
+  background:radial-gradient(ellipse at 30% 20%, rgba(124,92,255,.18), transparent 50%), radial-gradient(ellipse at 80% 90%, rgba(46,197,255,.12), transparent 50%); }
+.login form { width:min(400px,100%); padding:36px; border-radius:22px; background:var(--panel); border:1px solid var(--line); box-shadow:0 30px 80px -30px #000; }
+.login h1 { font-size:1.7rem; letter-spacing:-.02em; margin:14px 0 4px; }
+.login p { color:var(--dim); margin-bottom:22px; }
+.logo-mark { display:inline-grid; place-items:center; width:42px; height:42px; border-radius:12px; font:700 .95rem var(--mono); background:linear-gradient(135deg,var(--cyan),var(--violet)); color:#000; }
+.err { color:var(--red); font-size:.9rem; margin-top:10px; min-height:1.2em; }
+
+/* shell */
+.shell { display:grid; grid-template-columns:240px 1fr; min-height:100vh; }
+.side { position:sticky; top:0; height:100vh; overflow:auto; padding:20px 14px; border-right:1px solid var(--line); background:var(--panel); display:flex; flex-direction:column; gap:4px; }
+.side .brand { display:flex; align-items:center; gap:10px; padding:4px 8px 18px; font-weight:700; }
+.side .brand .logo-mark { width:34px; height:34px; font-size:.8rem; }
+.tab { display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:10px 12px; border-radius:10px; border:0; background:transparent; color:var(--dim); cursor:pointer; font-weight:500; }
+.tab:hover { background:var(--panel2); color:var(--text); }
+.tab.on { background:linear-gradient(90deg, rgba(46,197,255,.14), transparent); color:var(--text); box-shadow:inset 2px 0 var(--cyan); }
+.svg-icon { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; flex:none; vertical-align:middle; }
+.svg-icon svg { display:block; }
+.side .foot { margin-top:auto; padding:12px 8px 0; display:grid; gap:8px; }
+.side .foot a { color:var(--cyan); text-decoration:none; font-size:.9rem; }
+
+main { min-width:0; }
+.topbar { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:12px; padding:14px 28px; border-bottom:1px solid var(--line); background:rgba(6,7,12,.85); backdrop-filter:blur(12px); flex-wrap:wrap; }
+.topbar h2 { font-size:1.25rem; letter-spacing:-.01em; margin-right:auto; }
+.state { font:600 .75rem var(--mono); padding:6px 10px; border-radius:99px; border:1px solid var(--line); color:var(--green); }
+.state.dirty { color:var(--amber); border-color:rgba(255,176,32,.4); }
+.state.err { color:var(--red); }
+.auto { display:flex; gap:6px; align-items:center; font-size:.85rem; color:var(--dim); cursor:pointer; }
+.menu { display:none; }
+.content { padding:28px; max-width:1100px; }
+
+/* controls */
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:10px 18px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); cursor:pointer; font-weight:600; white-space:nowrap; transition:border-color .15s, transform .1s; }
+.btn:hover { border-color:var(--cyan); }
+.btn:active { transform:scale(.97); }
+.btn.primary { background:linear-gradient(135deg,var(--cyan),var(--violet)); color:#000; border:0; }
+.btn.danger { background:var(--red); color:#fff; border:0; }
+.btn.ghost { background:transparent; }
+.btn.sm { padding:6px 10px; font-size:.82rem; border-radius:8px; }
+.btn.icon { width:32px; height:32px; padding:0; border-radius:8px; }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px; margin-bottom:18px; }
+.card h3 { font-size:1.05rem; margin-bottom:4px; }
+.card > .hint { color:var(--dim); font-size:.88rem; margin-bottom:16px; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+label.f { display:grid; gap:6px; font-size:.82rem; color:var(--dim); margin-bottom:12px; }
+label.f.inline { display:flex; align-items:center; gap:10px; color:var(--text); font-size:.95rem; }
+input[type=text], input[type=number], input[type=url], input[type=email], input[type=password], input[type=datetime-local], select, textarea {
+  width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:var(--bg); color:var(--text); font-size:.95rem; outline:none; transition:border-color .15s; }
+input:focus, select:focus, textarea:focus { border-color:var(--cyan); }
+textarea { resize:vertical; min-height:80px; line-height:1.5; }
+input[type=color] { width:44px; height:40px; border:1px solid var(--line); border-radius:10px; background:var(--bg); padding:3px; cursor:pointer; }
+input[type=checkbox] { width:18px; height:18px; accent-color:var(--cyan); }
+
+.list { display:grid; gap:10px; }
+.item { display:grid; grid-template-columns:1fr auto; gap:12px; padding:14px; border-radius:12px; background:var(--panel2); border:1px solid var(--line); }
+.item.compact { padding:8px 8px 8px 12px; align-items:center; }
+.item .ctrl { display:flex; flex-direction:column; gap:4px; }
+.item.compact .ctrl { flex-direction:row; }
+.item .body label.f:last-child { margin-bottom:0; }
+
+.phases { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+.phase { padding:16px 10px; border-radius:12px; border:1px solid var(--line); background:var(--panel2); cursor:pointer; text-align:center; font-weight:600; transition:all .15s; }
+.phase small { display:block; color:var(--dim); font-weight:400; font-size:.75rem; margin-top:2px; }
+.phase.on { border-color:var(--c); background:color-mix(in srgb, var(--c) 16%, transparent); box-shadow:0 0 0 1px var(--c) inset; }
+.alert-live { display:flex; gap:12px; align-items:center; padding:12px 14px; border-radius:12px; background:rgba(255,59,92,.12); border:1px solid rgba(255,59,92,.4); color:#ffc9d2; margin-bottom:14px; }
+.pulse { width:10px; height:10px; border-radius:50%; background:var(--red); animation:p 1s infinite; flex:none; }
+@keyframes p { 50% { opacity:.3; } }
+.presets { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+
+/* score grid */
+.scores { width:100%; border-collapse:separate; border-spacing:0; overflow:auto; display:block; }
+.scores table { border-collapse:collapse; width:100%; min-width:640px; }
+.scores th, .scores td { padding:8px; border-bottom:1px solid var(--line); text-align:center; }
+.scores th { font:600 .72rem var(--mono); color:var(--dim); text-transform:uppercase; letter-spacing:.04em; }
+.scores td:first-child, .scores th:first-child { text-align:left; }
+.scores input { width:70px; text-align:center; padding:8px 4px; font-family:var(--mono); }
+.scores .tot { font:700 1.05rem var(--mono); color:var(--cyan); }
+.scores .rank { font:600 .8rem var(--mono); color:var(--dim); }
+.stepper { display:inline-flex; align-items:center; gap:2px; }
+.stepper button { width:24px; height:34px; border:1px solid var(--line); background:var(--panel2); border-radius:6px; cursor:pointer; color:var(--dim); }
+.stepper button:hover { color:var(--text); border-color:var(--cyan); }
+
+/* media */
+.drop { display:grid; place-items:center; gap:6px; padding:34px; border:2px dashed var(--line); border-radius:16px; text-align:center; color:var(--dim); cursor:pointer; transition:all .15s; }
+.drop.over, .drop:hover { border-color:var(--cyan); color:var(--text); background:rgba(46,197,255,.05); }
+.drop b { color:var(--text); font-size:1.05rem; }
+.media-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+.mcard { border-radius:12px; overflow:hidden; background:var(--panel2); border:1px solid var(--line); display:flex; flex-direction:column; }
+.mcard .thumb { aspect-ratio:16/10; background:#000 center/cover no-repeat; display:grid; place-items:center; color:var(--dim); font:600 .75rem var(--mono); }
+.mcard .thumb video { width:100%; height:100%; object-fit:cover; }
+.mcard .mb { padding:10px; display:grid; gap:8px; }
+.mcard .row { display:flex; gap:6px; }
+.progress { height:4px; border-radius:99px; background:var(--panel2); overflow:hidden; margin-top:10px; }
+.progress i { display:block; height:100%; width:0; background:var(--cyan); transition:width .2s; }
+
+.toast { position:fixed; right:20px; bottom:20px; z-index:100; padding:12px 18px; border-radius:12px; background:var(--panel2); border:1px solid var(--line); box-shadow:0 20px 50px -10px #000; transform:translateY(20px); opacity:0; transition:all .25s; pointer-events:none; }
+.toast.show { transform:none; opacity:1; }
+.toast.ok { border-color:rgba(24,224,160,.5); }
+.toast.bad { border-color:rgba(255,59,92,.6); }
+.sum { font:600 .85rem var(--mono); }
+.sum.bad { color:var(--amber); }
+kbd { font:600 .72rem var(--mono); padding:2px 6px; border:1px solid var(--line); border-radius:5px; color:var(--dim); }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns:1fr; }
+  .side { position:fixed; z-index:50; left:0; top:0; width:260px; transform:translateX(-100%); transition:transform .25s; box-shadow:20px 0 60px #000; }
+  .side.open { transform:none; }
+  .menu { display:inline-flex; }
+  .content { padding:16px; }
+  .topbar { padding:12px 16px; }
+  .topbar kbd { display:none; }
+  .grid2, .grid3 { grid-template-columns:1fr; }
+  .phases { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<section class="login" id="login">
+  <form id="loginForm">
+    <span class="logo-mark">TT</span>
+    <h1>Control Room</h1>
+    <p>Run the Tech Tank Hackathon live. Enter the admin passcode.</p>
+    <label class="f">Passcode<input type="password" id="pass" autocomplete="current-password" autofocus></label>
+    <label class="f inline"><input type="checkbox" id="remember"> Keep me signed in on this device</label>
+    <button class="btn primary" style="width:100%;margin-top:6px">Enter</button>
+    <div class="err" id="loginErr"></div>
+  </form>
+</section>
+
+<div class="shell" id="app" hidden>
+  <aside class="side" id="side">
+    <div class="brand"><span class="logo-mark">TT</span>Control Room</div>
+    <div id="tabs"></div>
+    <div class="foot">
+      <a href="/" target="_blank" rel="noopener">&#8599; Open live site</a>
+      <button class="btn sm ghost" id="logout">Sign out</button>
+    </div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <button class="btn icon menu" id="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <h2 id="tabTitle"></h2>
+      <label class="auto" title="Publish every change automatically, a second after you stop typing"><input type="checkbox" id="autopub"> Auto-publish</label>
+      <span class="state" id="state">Saved</span>
+      <button class="btn ghost sm" id="revert" title="Throw away unpublished changes">Discard</button>
+      <button class="btn primary" id="publish">Publish <kbd style="color:#000;border-color:rgba(0,0,0,.3)">Ctrl S</kbd></button>
+    </div>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="/admin.js"></script>
+</body>
+</html>

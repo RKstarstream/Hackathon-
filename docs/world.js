@@ -826,7 +826,8 @@ function renderSchedule() {
 function renderRegister() {
   const e = C.event; const btn = $('#regButton'); const nav = $('#navRegister');
   if (window.TECH_TANK_STATIC) {
-    const external = /^https:\/\//.test(e.registerUrl || '') ? e.registerUrl : '#registration-info';
+    let external = '#registration-info';
+    try { const url = new URL(e.registerUrl); if (url.protocol === 'https:') external = url.href; } catch {}
     [btn, nav, $('#navPortal')].forEach(a => { a.href = external; });
     btn.textContent = external.startsWith('https:') ? 'Register for the event' : 'Registration information';
     nav.textContent = 'Register'; $('#navPortal').hidden = true;

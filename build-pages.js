@@ -18,7 +18,8 @@ fs.writeFileSync(path.join(out, 'content.json'), JSON.stringify(content, null, 2
 
 let html = fs.readFileSync(path.join(root, 'public/index.html'), 'utf8');
 html = html.replace('<script src="world.js"></script>', '<script>window.TECH_TANK_STATIC = true;</script>\n<script src="world.js"></script>');
-html = html.replace('    <section class="block" id="faq">', '    <section class="block" id="registration-info"><h2 class="display">Participant access</h2><p class="lead">This is the public event website. Online account registration, payment uploads and participant sign-in will be available when the organisers connect the registration service.</p></section>\n    <section class="block" id="faq">');
+html = html.replace(/<section class="block" id="faq">/, '<section class="block" id="registration-info" tabindex="-1"><h2 class="display">Participant access</h2><p class="lead">Online registration is not connected yet. Please contact the organising team using the contact details below for registration assistance.</p></section>\n    <section class="block" id="faq">');
+html = html.replaceAll('id="navRegister" href="#"', 'id="navRegister" href="#registration-info"').replaceAll('id="regButton" href="#"', 'id="regButton" href="#registration-info"');
 html = html.replaceAll('href="/login"', 'href="#registration-info"');
 fs.writeFileSync(path.join(out, 'index.html'), html);
 let js = fs.readFileSync(path.join(root, 'public/world.js'), 'utf8');
@@ -26,7 +27,8 @@ js = js.replace("fetch('/api/content',", "fetch('./content.json',");
 js = js.replace("codeCheck.src = '/icons/check.svg'", "codeCheck.src = './icons/check.svg'");
 js = js.replace("  const e = C.event; const btn = $('#regButton'); const nav = $('#navRegister');", `  const e = C.event; const btn = $('#regButton'); const nav = $('#navRegister');
   if (window.TECH_TANK_STATIC) {
-    const external = /^https:\\/\\//.test(e.registerUrl || '') ? e.registerUrl : '#registration-info';
+    let external = '#registration-info';
+    try { const url = new URL(e.registerUrl); if (url.protocol === 'https:') external = url.href; } catch {}
     [btn, nav, $('#navPortal')].forEach(a => { a.href = external; });
     btn.textContent = external.startsWith('https:') ? 'Register for the event' : 'Registration information';
     nav.textContent = 'Register'; $('#navPortal').hidden = true;

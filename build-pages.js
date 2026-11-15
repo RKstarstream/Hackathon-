@@ -38,7 +38,7 @@ js = js.replace("  const e = C.event; const btn = $('#regButton'); const nav = $
 js = js.replace('  refreshAccount();', '  if (!window.TECH_TANK_STATIC) refreshAccount();');
 js = js.replace("if (!document.hidden) refreshAccount();", "if (!window.TECH_TANK_STATIC && !document.hidden) refreshAccount();");
 js = js.replace("if ('EventSource' in window)", "if (!window.TECH_TANK_STATIC && 'EventSource' in window)");
-js = js.replaceAll('href="/register"', 'href="#registration-info"').replaceAll('href="/portal"', 'href="#registration-info"');
+js = js.replaceAll('href="/register"', 'href="#registration-info"').replaceAll('href="/portal"', 'href="#registration-info"').replaceAll('href="/login"', 'href="#registration-info"');
 fs.writeFileSync(path.join(out, 'world.js'), js);
 fs.writeFileSync(path.join(out, '.nojekyll'), '');
 console.log('GitHub Pages 3D website built in docs/ (public data only).');

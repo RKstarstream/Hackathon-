@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "apps-script-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/preview-apps-script.js", "--open-registration"],
+      "port": 8787
+    }
+  ]
+}

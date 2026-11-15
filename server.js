@@ -60,10 +60,10 @@ function writeContent(obj) {
   obj.updatedAt = new Date().toISOString();
   const text = JSON.stringify(obj, null, 2);
   const tmp = DATA + '.' + process.pid + '.tmp';
+  // Keep the previous publish as a backup so a bad save can be undone by hand.
+  try { fs.copyFileSync(DATA, path.join(ROOT, 'data', 'content.backup.json')); } catch {}
   fs.writeFileSync(tmp, text);
   fs.renameSync(tmp, DATA);
-  // keep a rolling backup so a bad save can be undone by hand
-  fs.writeFileSync(path.join(ROOT, 'data', 'content.backup.json'), text);
   broadcast(text);
   return obj;
 }

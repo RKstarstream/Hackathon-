@@ -278,12 +278,15 @@ V.media = () => {
 
   const grid = h('div', { class: 'media-grid' }, D.media.map((m, i) => {
     const thumb = h('div', { class: 'thumb' });
+    const drive = (/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=|thumbnail\?id=)|lh3\.googleusercontent\.com\/d\/)([\w-]{20,})/.exec(m.url || '') || [])[1];
     if (m.topic === 'twist' || /sample-crisis-card/i.test(m.url || '')) thumb.append(icon('shuffle'), 'Twist widget');
+    else if (drive) thumb.style.backgroundImage = `url("https://lh3.googleusercontent.com/d/${drive}=w600")`;
     else if (m.type === 'video') thumb.append(h('video', { src: m.url, muted: true, preload: 'metadata' }));
     else if (m.type === 'youtube') { const id = (/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/.exec(m.url) || [])[1]; thumb.style.backgroundImage = `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`; }
     else thumb.style.backgroundImage = `url("${m.url.replace(/"/g, '%22')}")`;
     if (!m.topic) m.topic = /sample-crisis-card/i.test(m.url || '') ? 'twist' : /sample-theme/i.test(m.url || '') ? 'theme' : /sample-campaign/i.test(m.url || '') ? 'campaign' : 'media';
     return h('div', { class: 'mcard' }, thumb, h('div', { class: 'mb' }, text(m, 'caption', null, { placeholder: 'Caption' }),
+      select(m, 'type', 'Type', [['image', 'Image'], ['video', 'Video'], ['youtube', 'YouTube']], render),
       select(m, 'topic', 'Widget content', [['media', 'Media details'], ['theme', 'Event theme'], ['campaign', 'Event information'], ['twist', 'The twist (follows reveal controls)'], ['question', 'Question card'], ['rules', 'Rules & judging'], ['presentation', 'Presentation format'], ['schedule', 'Schedule'], ['results', 'Results']]),
       text(m, 'details', 'Widget description (for media cards)', { multiline: true, rows: 2 }),
       h('div', { class: 'row' },

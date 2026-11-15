@@ -23,5 +23,8 @@ jobs:
           node --check server.js
           node --check participants.js
           node --check apps-script-sync.js
+          node --check tools/build-apps-script.js
+          node --check tools/apps-script-bridge.js
+          node --check tools/preview-apps-script.js
       - name: Test website and integrations
         run: npm test

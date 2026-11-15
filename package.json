@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "description": "Tech Tank Hackathon website and live event control room",
-  "scripts": { "start": "node server.js", "test": "node --test", "build:pages": "node build-pages.js" },
-  "engines": { "node": ">=18" }
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "build:pages": "node build-pages.js",
+    "build:apps-script": "node tools/build-apps-script.js",
+    "preview:apps-script": "node tools/preview-apps-script.js --open-registration"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }

@@ -243,7 +243,11 @@ body.no3d #journey { height: auto; }
 .gallery { columns: 3 260px; column-gap: 12px; }
 .g-item { break-inside: avoid; margin-bottom: 12px; position: relative; overflow: hidden; cursor: zoom-in; background: var(--surface); }
 .g-item img, .g-item video { display: block; width: 100%; height: auto; transition: transform .6s var(--ease-out); }
-.g-item figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 12px 10px; font-size: .85rem; background: linear-gradient(transparent, rgba(0,0,0,.85)); }
+button.g-item { display: block; width: 100%; padding: 0; border: 0; color: inherit; font: inherit; text-align: left; }
+button.g-item:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.g-locked { display: grid; place-items: center; gap: 8px; aspect-ratio: 16 / 10; color: var(--dim); font: 600 .8rem var(--body); letter-spacing: .08em; text-transform: uppercase; background: repeating-linear-gradient(135deg, rgba(255,255,255,.03) 0 12px, transparent 12px 24px), var(--surface-2); }
+.g-locked svg { width: 34px; height: 34px; }
+.g-item figcaption, .g-item .g-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 12px 10px; font-size: .85rem; background: linear-gradient(transparent, rgba(0,0,0,.85)); }
 .g-item .tag { position: absolute; top: 10px; right: 10px; display: inline-flex; align-items: center; gap: 5px; font: 600 .75rem var(--body); padding: 4px 10px; border-radius: 999px; background: rgba(0,0,0,.72); }
 .faq { display: grid; gap: 8px; max-width: 780px; }
 .faq details { background: var(--surface); }

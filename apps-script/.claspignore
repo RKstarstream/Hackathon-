@@ -1,0 +1,5 @@
+# clasp pushes only the web app files; README.md stays local.
+**/**
+!appsscript.json
+!*.gs
+!*.html

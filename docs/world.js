@@ -857,7 +857,8 @@ function tick() {
   if (!C) return;
   const q = C.question || {};
   const qc = $('#qCount'); if (qc && q.revealAt) qc.innerHTML = countdownBoxes(q.revealAt);
-  if (q.sealed !== false && q.revealAt && Date.now() >= Date.parse(q.revealAt) && !fetchingReveal) { fetchingReveal = true; setTimeout(() => { load().finally(() => { fetchingReveal = false; }); }, 1500); }
+  // A device clock running ahead of the server must not re-request every second until the server agrees.
+  if (q.sealed !== false && q.revealAt && Date.now() >= Date.parse(q.revealAt) && !fetchingReveal) { fetchingReveal = true; setTimeout(() => { load().catch(() => {}).finally(() => { setTimeout(() => { fetchingReveal = false; }, 5000); }); }, 1500); }
   const e = C.event; const box = $('#regCountdown');
   const now = Date.now(); const dl = Date.parse(e.registrationDeadline), st = Date.parse(e.startsAt);
   if (e.registrationOpen !== false && dl > now) box.innerHTML = `<div style="flex-basis:100%;border:0;background:none;padding:0"><p class="countdown-label">Registrations close in</p></div>` + countdownBoxes(e.registrationDeadline);
@@ -888,6 +889,7 @@ function renderControl() {
   }
 
   renderTwistSummary();
+  renderGallery();
 
   $('#faqList').innerHTML = (C.faq || []).map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('');
   $('#faq').hidden = !(C.faq || []).length;
@@ -896,7 +898,8 @@ function renderControl() {
   const e = C.event; const links = [];
   if (e.contactEmail) links.push(`<span>${esc(e.contactEmail)}</span>`);
   if (e.instagram) links.push(`<a href="${esc(/^https?:/.test(e.instagram) ? e.instagram : 'https://instagram.com/' + e.instagram.replace('@', ''))}" target="_blank" rel="noopener">Instagram ${esc(e.instagram.startsWith('@') ? e.instagram : '')}</a>`);
-  links.push('<a href="#registration-info">Participant registration</a><a href="#registration-info">My participant portal ↗</a>');
+  const regOpen = e.registrationOpen !== false && !(e.registrationDeadline && Date.now() > Date.parse(e.registrationDeadline));
+  links.push((regOpen ? '<a href="#registration-info">Participant registration</a>' : '<a href="#registration-info">Participant sign in</a>') + '<a href="#registration-info">My participant portal ↗</a>');
   $('#contact').innerHTML = links.join('') || '<span class="dim" style="color:var(--dim)">Contact details coming soon.</span>';
   $('#updated').textContent = C.updatedAt ? 'Last updated ' + new Date(C.updatedAt).toLocaleString() : '';
 }
@@ -912,6 +915,32 @@ function renderTwistSummary() {
 $('#qualSearch').addEventListener('input', () => renderControl());
 
 const ytId = (u) => { const m = /(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/.exec(u || ''); return m && m[1]; };
+// Google Drive files (uploads on the Apps Script version, or pasted Drive links)
+const driveId = (u) => { const m = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=|thumbnail\?id=)|lh3\.googleusercontent\.com\/d\/)([\w-]{20,})/.exec(u || ''); return m && m[1]; };
+
+/* gallery: each media card opens a live detail widget */
+const TOPIC_LABELS = { twist: 'The twist', theme: 'Event theme', campaign: 'Event information', question: 'Question card', rules: 'Rules & judging', presentation: 'Presentation', schedule: 'Schedule', results: 'Results', media: 'Media' };
+const LOCK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
+const CARD_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>';
+function mediaThumb(it) {
+  if (it.locked || !it.url) return `<div class="g-locked">${it.locked ? LOCK_SVG : CARD_SVG}<span>${it.locked ? 'Sealed' : 'Open details'}</span></div>`;
+  const yt = ytId(it.url), drive = driveId(it.url);
+  if (it.type === 'youtube' && yt) return `<img src="https://img.youtube.com/vi/${esc(yt)}/hqdefault.jpg" alt="" loading="lazy">`;
+  if (drive) return `<img src="https://lh3.googleusercontent.com/d/${esc(drive)}=w1200" alt="" loading="lazy">`;
+  if (it.type === 'video') return `<video src="${esc(it.url)}" muted playsinline preload="metadata"></video>`;
+  return `<img src="${esc(it.url)}" alt="" loading="lazy">`;
+}
+function renderGallery() {
+  const media = C.media || [];
+  $('#gallery').hidden = !media.length;
+  $('#galleryGrid').innerHTML = media.map((it, i) => {
+    const label = it.locked ? 'Locked' : TOPIC_LABELS[it.topic] || 'Media';
+    return `<button type="button" class="g-item" data-i="${i}" aria-label="${esc((it.caption || label) + ': open details')}">${mediaThumb(it)}<span class="tag">${esc(label)}</span>${it.caption ? `<span class="g-cap">${esc(it.caption)}</span>` : ''}</button>`;
+  }).join('');
+}
+$('#galleryGrid').addEventListener('click', (e) => { const b = e.target.closest('.g-item'); if (b) openLb(+b.dataset.i); });
+// a missing or private image falls back to a neutral card instead of a broken-image icon
+$('#galleryGrid').addEventListener('error', (e) => { if (e.target.matches('img,video')) e.target.outerHTML = `<div class="g-locked">${CARD_SVG}<span>Open details</span></div>`; }, true);
 /* track brief: opened from the list or by clicking a floating track card */
 let tmI = 0;
 function openTrack(i) {
@@ -962,8 +991,8 @@ function cardWidget(it) {
     case 'schedule': return heading('Event schedule') + (C.schedule || []).map((s) => `<p><b>${esc(s.day)} · ${esc(s.time)} — ${esc(s.title)}</b><br>${esc(s.desc)}</p>`).join('');
     case 'results': return heading('Results') + `<p>${C.results?.published ? esc(C.results.note || 'The latest results are published.') : 'Results have not been published yet.'}</p>${portalLink}`;
     default: {
-      const yt = ytId(it.url);
-      return heading(it.caption || 'Event update') + `<p>${esc(it.details || 'An update from the Tech Tank event team.')}</p>${it.type === 'video' ? `<video src="${esc(it.url)}" controls playsinline preload="metadata"></video>` : yt ? `<iframe src="https://www.youtube.com/embed/${esc(yt)}" title="${esc(it.caption || 'Event video')}" allowfullscreen></iframe>` : ''}${portalLink}`;
+      const yt = ytId(it.url), drive = it.type === 'video' && typeof driveId === 'function' ? driveId(it.url) : null;
+      return heading(it.caption || 'Event update') + `<p>${esc(it.details || 'An update from the Tech Tank event team.')}</p>${drive ? `<iframe src="https://drive.google.com/file/d/${esc(drive)}/preview" title="${esc(it.caption || 'Event video')}" allow="autoplay; fullscreen" allowfullscreen></iframe>` : it.type === 'video' ? `<video src="${esc(it.url)}" controls playsinline preload="metadata"></video>` : yt ? `<iframe src="https://www.youtube.com/embed/${esc(yt)}" title="${esc(it.caption || 'Event video')}" allowfullscreen></iframe>` : ''}${portalLink}`;
     }
   }
 }
@@ -983,7 +1012,7 @@ function refreshCardWidget() {
   const index = (C.media || []).findIndex((m) => m.id === lbId);
   if (index < 0) closeLb(); else openLb(index, false);
 }
-const closeLb = () => { $('#lightbox').hidden = true; $('#lbStage').innerHTML = ''; document.body.classList.remove('card-widget-open'); const target = lbReturnFocus?.isConnected ? lbReturnFocus : $$('.g-item')[lbI]; target?.focus({ preventScroll: true }); };
+const closeLb = () => { $('#lightbox').hidden = true; $('#lbStage').innerHTML = ''; document.body.classList.remove('card-widget-open'); const target = lbReturnFocus?.isConnected && lbReturnFocus !== document.body ? lbReturnFocus : $$('.g-item')[lbI]; target?.focus({ preventScroll: true }); };
 $('#lbClose').onclick = closeLb; $('#lbPrev').onclick = () => openLb(lbI - 1); $('#lbNext').onclick = () => openLb(lbI + 1);
 $('#lightbox').addEventListener('click', (e) => { if (e.target.id === 'lightbox') closeLb(); });
 addEventListener('keydown', (e) => {
@@ -1016,8 +1045,31 @@ function renderAlert() {
     const box = $('.alert-box'); box.className = 'alert-box ' + (a.level === 'AMBER' ? 'amber' : a.level === 'INFO' ? 'info' : '');
     $('#alertLevel').textContent = a.level === 'INFO' ? 'ANNOUNCEMENT' : a.level === 'AMBER' ? 'HEADS UP' : 'ALERT · LEVEL RED';
     $('#alertTitle').textContent = a.title || ''; $('#alertMsg').textContent = a.message || ''; $('#alertModal').hidden = false;
+    if (lastAlertId !== null || contentJSON) alertSound(a.level);
   }
   lastAlertId = a.id;
+}
+// Browsers only allow sound after the viewer has interacted with the page, so unlock audio on the first tap or key.
+let audioCtx = null;
+const unlockAudio = () => {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    audioCtx = audioCtx || new AC(); if (audioCtx.state === 'suspended') audioCtx.resume();
+  } catch { audioCtx = null; }
+};
+['pointerdown', 'keydown', 'touchend'].forEach((ev) => addEventListener(ev, unlockAudio, { passive: true }));
+function alertSound(level) {
+  if (!audioCtx || audioCtx.state !== 'running') return;
+  try {
+    const start = audioCtx.currentTime + .02;
+    const tones = level === 'INFO' ? [660, 880] : level === 'AMBER' ? [740, 740, 740] : [880, 620, 880, 620];
+    tones.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator(), gain = audioCtx.createGain(), t = start + i * .2;
+      osc.type = level === 'RED' || !level ? 'square' : 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(.12, t + .02); gain.gain.exponentialRampToValueAtTime(.0001, t + .18);
+      osc.connect(gain); gain.connect(audioCtx.destination); osc.start(t); osc.stop(t + .2);
+    });
+  } catch {}
 }
 $('#alertClose').onclick = () => { $('#alertModal').hidden = true; try { sessionStorage.setItem('tt-alert', C.alert.id); } catch {} };
 $('#alertBar').onclick = () => { lastAlertId = null; try { sessionStorage.removeItem('tt-alert'); } catch {} renderAlert(); };

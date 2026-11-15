@@ -1,6 +1,6 @@
 # Google Apps Script registration integration
 
-New registrations can be copied to Google Sheets, with payment screenshots in a private Drive folder. The Node server remains required for accounts, login, private files and live updates; this does not host the website inside Apps Script. No Google connection is enabled by default.
+New registrations can be copied to Google Sheets, with payment screenshots in a private Drive folder. The Node server remains required for accounts, login, private files and live updates; this does not host the website inside Apps Script. To host the whole website on Apps Script instead, use [apps-script/](../../apps-script/README.md). No Google connection is enabled by default.
 
 ## Set up Google
 

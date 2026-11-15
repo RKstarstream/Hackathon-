@@ -4,6 +4,10 @@ The public event site is a scroll-driven 3D journey. It opens on a powered-off l
 
 It also has a live **Control Room** for running the event. No build step and no packages to install. You only need Node.js 18 or newer.
 
+## Run it on Google Apps Script (no server needed)
+
+The `apps-script/` folder is the complete website as a Google Apps Script web app: every page (3D site, register, sign in, portal, Control Room) has its own address, and data is kept in your Google Drive. Follow [apps-script/README.md](apps-script/README.md) to deploy it. After changing anything in `public/` or `data/content.json`, run `npm run build:apps-script` and upload the regenerated files. `npm run preview:apps-script` runs the Apps Script version locally at http://localhost:8787/exec before you deploy.
+
 ## Start it
 
 ```bash
@@ -82,13 +86,15 @@ Optional Google integration: see [Google Apps Script setup](integrations/google-
 
 ## Source files
 
-- `data/content.json`: all site content. The Control Room edits this file. A copy of the last publish is kept in `data/content.backup.json`.
+- `data/content.json`: all site content. The Control Room edits this file. The previous publish is kept in `data/content.backup.json`.
 - `public/uploads/`: uploaded media.
 - `public/index.html`, `world.css`, `world.js`: the 3D site. `public/vendor/three.min.js` is Three.js r128 (MIT), bundled so it works offline.
 - `public/admin.html`, `admin.js`: the Control Room.
 - `server.js`: the zero-dependency Node server.
 - `render-start.js`: deployment entry point for hosts with persistent storage at `/var/data/tech-tank`.
-- `apps-script-sync.js` and `integrations/google-apps-script/`: optional Google Sheets and Drive integration and setup instructions.
+- `apps-script/`: the whole website as a Google Apps Script web app (`Code.gs` server plus generated pages). See its README.
+- `tools/`: `build-apps-script.js` (generates the Apps Script pages from `public/`), `apps-script-bridge.js` (connects the pages to Apps Script), `preview-apps-script.js` and `gas-sim.cjs` (local preview and test stand-in for Google services).
+- `apps-script-sync.js` and `integrations/google-apps-script/`: optional Google Sheets and Drive integration for the Node server.
 - `tests/`: isolated regression tests; run with `npm test`.
 - `participants.js`: account authentication, private account management and authenticated portal API.
 - `public/account.html`, `account.js`, `portal.html`, `portal.js`, `portal.css`: registration, login and participant portal.

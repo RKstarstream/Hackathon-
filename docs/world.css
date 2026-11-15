@@ -215,6 +215,9 @@ body.no3d #journey { height: auto; }
 /* ---------- control area (normal scroll) ---------- */
 #control { position: relative; z-index: 5; background: linear-gradient(rgba(4,5,10,0), rgba(4,5,10,.92) 18vh, var(--ink) 40vh); padding-top: 30vh; }
 .control-inner { max-width: 1080px; margin: 0 auto; padding-inline: var(--gx) var(--gy); display: grid; gap: 90px; padding-bottom: 60px; }
+/* Sections opened from a link land below the fixed header (and the section bar on phones). */
+#control .block { scroll-margin-top: 100px; }
+@media (max-width: 760px) { #control .block { scroll-margin-top: calc(138px + env(safe-area-inset-top, 0px)); } }
 .block .display { font-size: clamp(2rem, 5vw, 3.4rem); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .live { display: inline-flex; align-items: center; gap: 6px; font: 700 .8rem var(--body); color: var(--red); background: color-mix(in srgb, var(--red) 14%, transparent); border-radius: 999px; padding: 5px 12px; }
 .live i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: blink 1s steps(2) infinite; }

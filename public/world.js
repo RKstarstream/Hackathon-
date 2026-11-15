@@ -743,7 +743,8 @@ function renderAll() {
   const e = C.event;
   document.title = `${e.name} · ${e.theme}`;
   $('#phase').dataset.phase = e.phase || 'upcoming';
-  $('#phaseText').textContent = e.phase === 'upcoming' && e.registrationOpen === false ? 'Coming soon' : PHASES[e.phase] || e.phase;
+  const regClosed = e.registrationDeadline && Date.now() > Date.parse(e.registrationDeadline);
+  $('#phaseText').textContent = e.phase === 'upcoming' ? (e.registrationOpen === false ? 'Coming soon' : regClosed ? 'Registrations closed' : PHASES.upcoming) : PHASES[e.phase] || e.phase;
   setText('#introTitle', e.name);
   $('#introTag').textContent = e.campaign || '';
   $('#introDetails').innerHTML = (e.stats || []).slice(0, 3).map((s) => `<span><b>${esc(s.value)}</b>${esc(s.label)}</span>`).join('');

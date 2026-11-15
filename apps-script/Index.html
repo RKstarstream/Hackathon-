@@ -520,6 +520,9 @@ body.no3d #journey { height: auto; }
 /* ---------- control area (normal scroll) ---------- */
 #control { position: relative; z-index: 5; background: linear-gradient(rgba(4,5,10,0), rgba(4,5,10,.92) 18vh, var(--ink) 40vh); padding-top: 30vh; }
 .control-inner { max-width: 1080px; margin: 0 auto; padding-inline: var(--gx) var(--gy); display: grid; gap: 90px; padding-bottom: 60px; }
+/* Sections opened from a link land below the fixed header (and the section bar on phones). */
+#control .block { scroll-margin-top: 100px; }
+@media (max-width: 760px) { #control .block { scroll-margin-top: calc(138px + env(safe-area-inset-top, 0px)); } }
 .block .display { font-size: clamp(2rem, 5vw, 3.4rem); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .live { display: inline-flex; align-items: center; gap: 6px; font: 700 .8rem var(--body); color: var(--red); background: color-mix(in srgb, var(--red) 14%, transparent); border-radius: 999px; padding: 5px 12px; }
 .live i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: blink 1s steps(2) infinite; }
@@ -2712,7 +2715,8 @@ function renderAll() {
   const e = C.event;
   document.title = `${e.name} · ${e.theme}`;
   $('#phase').dataset.phase = e.phase || 'upcoming';
-  $('#phaseText').textContent = e.phase === 'upcoming' && e.registrationOpen === false ? 'Coming soon' : PHASES[e.phase] || e.phase;
+  const regClosed = e.registrationDeadline && Date.now() > Date.parse(e.registrationDeadline);
+  $('#phaseText').textContent = e.phase === 'upcoming' ? (e.registrationOpen === false ? 'Coming soon' : regClosed ? 'Registrations closed' : PHASES.upcoming) : PHASES[e.phase] || e.phase;
   setText('#introTitle', e.name);
   $('#introTag').textContent = e.campaign || '';
   $('#introDetails').innerHTML = (e.stats || []).slice(0, 3).map((s) => `<span><b>${esc(s.value)}</b>${esc(s.label)}</span>`).join('');

@@ -4,8 +4,20 @@
     {
       "name": "apps-script-preview",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["tools/preview-apps-script.js", "--open-registration"],
+      "runtimeArgs": [
+        "tools/preview-apps-script.js",
+        "--open-registration"
+      ],
       "port": 8787
+    },
+    {
+      "name": "github-pages-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "-e",
+        "const h=require('http'),f=require('fs'),p=require('path'),r=p.resolve('docs'),t={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml'};h.createServer((q,s)=>{let u=decodeURIComponent(new URL(q.url,'http://x').pathname);if(u.endsWith('/'))u+='index.html';const x=p.join(r,u);if(!x.startsWith(r)||!f.existsSync(x)){s.writeHead(404);return s.end('Not found')}s.writeHead(200,{'Content-Type':t[p.extname(x)]||'application/octet-stream'});f.createReadStream(x).pipe(s)}).listen(8790)"
+      ],
+      "port": 8790
     }
   ]
 }

@@ -37,6 +37,7 @@ Links between pages work automatically. Unknown pages show a "Page not found" me
 7. Open the **Execution log**. It shows your **admin passcode**, the data folder and the registrations sheet. Keep the passcode private.
 8. Click **Deploy → New deployment**, choose the type **Web app**, set **Execute as: Me** and **Who has access: Anyone**, then **Deploy**. Copy the web app URL ending in `/exec`.
 9. Open the URL. Open `…/exec?page=admin`, sign in with the passcode, and check **Event details** (registration deadline, dates, venue) before sharing the link.
+10. Optional: to make the Register and Sign in buttons on the GitHub Pages site open these pages, put the `/exec` URL in `pages.config.json` at the project root (`{ "webAppUrl": "https://script.google.com/macros/s/…/exec" }`), run `npm run build:pages`, and push.
 
 ### Deploy with clasp instead
 

@@ -743,7 +743,8 @@ function renderAll() {
   const e = C.event;
   document.title = `${e.name} · ${e.theme}`;
   $('#phase').dataset.phase = e.phase || 'upcoming';
-  $('#phaseText').textContent = e.phase === 'upcoming' && e.registrationOpen === false ? 'Coming soon' : PHASES[e.phase] || e.phase;
+  const regClosed = e.registrationDeadline && Date.now() > Date.parse(e.registrationDeadline);
+  $('#phaseText').textContent = e.phase === 'upcoming' ? (e.registrationOpen === false ? 'Coming soon' : regClosed ? 'Registrations closed' : PHASES.upcoming) : PHASES[e.phase] || e.phase;
   setText('#introTitle', e.name);
   $('#introTag').textContent = e.campaign || '';
   $('#introDetails').innerHTML = (e.stats || []).slice(0, 3).map((s) => `<span><b>${esc(s.value)}</b>${esc(s.label)}</span>`).join('');
@@ -825,6 +826,17 @@ function renderSchedule() {
 
 function renderRegister() {
   const e = C.event; const btn = $('#regButton'); const nav = $('#navRegister');
+  if (window.TECH_TANK_STATIC && window.TECH_TANK_APP) {
+    // Registration, sign in and the portal run on the Google Apps Script web app.
+    const page = (name) => window.TECH_TANK_APP + '?page=' + name;
+    const open = e.registrationOpen !== false && !(e.registrationDeadline && Date.now() > Date.parse(e.registrationDeadline));
+    [btn, nav].forEach((a) => { a.removeAttribute('target'); a.classList.remove('off'); a.href = page(open ? 'register' : 'login'); });
+    btn.textContent = open ? 'Create account & register' : 'Participant sign in';
+    nav.textContent = open ? 'Register' : 'Sign in';
+    $('#navPortal').href = page('login'); $('#navPortal').textContent = 'Participant sign in'; $('#navPortal').hidden = !open;
+    $('#regText').textContent = open ? 'Create your participant account to register and access your portal.' + (e.registrationDeadline ? ' Registrations close ' + fmtDate(e.registrationDeadline) + '.' : '') : 'Registrations are closed. Existing participants can sign in to their portal.';
+    return;
+  }
   if (window.TECH_TANK_STATIC) {
     let external = '#registration-info';
     try { const url = new URL(e.registerUrl); if (url.protocol === 'https:') external = url.href; } catch {}
